@@ -1,12 +1,15 @@
 package sceenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
+import huds.MainMenuButtons;
 
 public class MainMenu implements Screen {
     private GameMain gameMain;
@@ -14,6 +17,7 @@ public class MainMenu implements Screen {
     private Viewport viewport;
 
     private Texture background;
+    private MainMenuButtons buttons;
 
 
     public MainMenu(GameMain gameMain) {
@@ -25,7 +29,9 @@ public class MainMenu implements Screen {
 
         viewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, mainCamera);
 
-        background = new Texture(""); //
+        background = new Texture("Backgrounds/Menu BG.png");
+
+        buttons = new MainMenuButtons(gameMain);
     }
 
     @Override
@@ -35,7 +41,15 @@ public class MainMenu implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        gameMain.getBatch().begin();
+        gameMain.getBatch().draw(background, 0 , 0);
+        gameMain.getBatch().end();
+
+        gameMain.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
+        buttons.getStage().draw();
     }
 
     @Override
