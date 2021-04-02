@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
+import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import helpers.GameInfo;
 
@@ -28,6 +29,7 @@ public class MainMenuButtons {
         stage = new Stage(viewport, game.getBatch());
 
         Gdx.input.setInputProcessor(stage);
+        checkTheMusic();
 
         createAndPositionButtons();
         addListenersToButtons();
@@ -58,9 +60,21 @@ public class MainMenuButtons {
         musicBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // musiconoff
+                if (GameManager.getInstance().isMusicOn){
+                    GameManager.getInstance().isMusicOn = false;
+                    GameManager.getInstance().stopMusic();
+                }else {
+                    GameManager.getInstance().isMusicOn = true;
+                    GameManager.getInstance().playMusic();
+                }
             }
         });
+    }
+
+    void checkTheMusic(){
+        if (GameManager.getInstance().isMusicOn){
+            GameManager.getInstance().playMusic();
+        }
     }
 
     private void createAndPositionButtons() {
@@ -69,9 +83,9 @@ public class MainMenuButtons {
         quitBtn = new ImageButtonGenerator("Buttons/Menu/Quit.png");
         musicBtn = new ImageButtonGenerator("Buttons/Menu/Music On.png");
 
-        playBtn.setPosition(GameInfo.WIDTH / 2 - 100 , GameInfo.HEIGHT / 2 - 70, Align.center);
-        optionsBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2 - 156, Align.center);
-        quitBtn.setPosition(GameInfo.WIDTH / 2 + 100, GameInfo.HEIGHT / 2 - 244 , Align.center);
+        playBtn.setPosition(GameInfo.WIDTH / 2f - 100 , GameInfo.HEIGHT / 2f - 70, Align.center);
+        optionsBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 156, Align.center);
+        quitBtn.setPosition(GameInfo.WIDTH / 2f + 100, GameInfo.HEIGHT / 2f - 244 , Align.center);
         musicBtn.setPosition(GameInfo.WIDTH - 13, 13, Align.bottomRight);
 
         stage.addActor(playBtn);
