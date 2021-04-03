@@ -14,6 +14,7 @@ import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import helpers.GameInfo;
+import sceenes.PlayBoard;
 
 public class MainMenuButtons {
     private GameMain game;
@@ -39,7 +40,7 @@ public class MainMenuButtons {
         playBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // MultiPlayscreen
+                game.setScreen(new PlayBoard(game));
             }
         });
 
