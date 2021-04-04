@@ -57,7 +57,7 @@ public class Player extends Sprite {
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
             float laterX = getX() + 48;
             if (laterX > GameInfo.WIDTH - 20){
-                setPosition(10, getY() + 55f);
+                setPosition(3, getY() + 55f);
             }else {
                 setPosition(getX() + 48, getY());
                 body.getPosition().set(getX(), getY());
