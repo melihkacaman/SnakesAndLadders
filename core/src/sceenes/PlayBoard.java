@@ -5,12 +5,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import com.melihkacaman.snakesandladders.HelpersMethods;
 import helpers.GameInfo;
 import huds.GameBoardButtons;
+import player.Player;
+import player.PlayerCharacter;
+
+import java.util.Queue;
 
 public class PlayBoard implements Screen {
     private GameMain game;
@@ -18,6 +24,10 @@ public class PlayBoard implements Screen {
     private Viewport viewport;
     private Texture bg;
     private GameBoardButtons buttons;
+    private Player player;
+
+
+    private World world;
 
     public PlayBoard(GameMain game) {
         this.game = game;
@@ -26,8 +36,11 @@ public class PlayBoard implements Screen {
         camera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
         viewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, camera);
 
+        world = new World(new Vector2(0,0), true);
+
         bg = new Texture("Backgrounds/Play Board.png");
         buttons = new GameBoardButtons(game);
+        player = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
     }
 
     @Override
@@ -37,16 +50,19 @@ public class PlayBoard implements Screen {
 
     @Override
     public void render(float delta) {
-        //HelpersMethods.clearScreen();
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        HelpersMethods.clearScreen();
+
+        player.movePlayer();
 
         game.getBatch().begin();
         game.getBatch().draw(bg, 0,0);
+        player.drawPlayer(game.getBatch());
         game.getBatch().end();
 
         game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
         buttons.getStage().draw();
+
+        world.step(Gdx.graphics.getDeltaTime(),6,2);
     }
 
     @Override
@@ -73,5 +89,6 @@ public class PlayBoard implements Screen {
     public void dispose() {
         bg.dispose();
         buttons.getStage().dispose();
+        world.dispose();
     }
 }
