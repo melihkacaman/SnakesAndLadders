@@ -16,6 +16,8 @@ import huds.GameBoardButtons;
 import player.Player;
 import player.PlayerCharacter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 public class PlayBoard implements Screen {
@@ -24,13 +26,16 @@ public class PlayBoard implements Screen {
     private Viewport viewport;
     private Texture bg;
     private GameBoardButtons buttons;
-    private Player player;
 
+    // players
+    private Player player;
+    List<Player> players;
 
     private World world;
 
     public PlayBoard(GameMain game) {
         this.game = game;
+        this.players = new ArrayList<Player>();
 
         camera = new OrthographicCamera(GameInfo.WIDTH, GameInfo.HEIGHT);
         camera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
@@ -39,8 +44,11 @@ public class PlayBoard implements Screen {
         world = new World(new Vector2(0,0), true);
 
         bg = new Texture("Backgrounds/Play Board.png");
-        buttons = new GameBoardButtons(game);
+
         player = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
+        players.add(player);
+
+        buttons = new GameBoardButtons(game, players);
     }
 
     @Override
@@ -52,7 +60,6 @@ public class PlayBoard implements Screen {
     public void render(float delta) {
         HelpersMethods.clearScreen();
 
-        player.movePlayer();
 
         game.getBatch().begin();
         game.getBatch().draw(bg, 0,0);
@@ -90,5 +97,9 @@ public class PlayBoard implements Screen {
         bg.dispose();
         buttons.getStage().dispose();
         world.dispose();
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
