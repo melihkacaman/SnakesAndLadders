@@ -5,9 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
+import sceenes.PlayBoard;
 
 public class Player extends Sprite {
     private String name;
@@ -54,8 +56,7 @@ public class Player extends Sprite {
         this.setPosition(body.getPosition().x, body.getPosition().y);
     }
 
-
-    protected void movePlayer(int dice){
+    public void updatePlayer(int dice){
         if (dice > 0 && dice <= 6){
             for (int i = 0; i < dice; i++){
                 float laterX = getX() + 48;
@@ -66,7 +67,6 @@ public class Player extends Sprite {
                     setPosition(getX() + 48, getY());
                     body.getPosition().set(getX(), getY());
                 }
-                this.currentLocation++;
             }
         }
     }
@@ -75,8 +75,7 @@ public class Player extends Sprite {
         return this.currentLocation;
     }
 
-
-    public void drawPlayer(SpriteBatch batch){
+    public void drawPlayer(SpriteBatch batch) {
         batch.draw(this, getX(), getY());
     }
 }

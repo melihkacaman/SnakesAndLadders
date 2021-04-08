@@ -62,8 +62,11 @@ public class PlayBoard implements Screen {
 
 
         game.getBatch().begin();
+
         game.getBatch().draw(bg, 0,0);
         player.drawPlayer(game.getBatch());
+        //player.updatePlayer();
+
         game.getBatch().end();
 
         game.getBatch().setProjectionMatrix(buttons.getStage().getCamera().combined);
