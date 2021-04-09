@@ -43,8 +43,8 @@ public class Player extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        //fixtureDef.friction = 2f;
-        //fixtureDef.density = 4f;
+        //fixtureDef.friction = 2000f;
+        //fixtureDef.density = 1000f;
         // need density = mass
 
         Fixture fixture = body.createFixture(fixtureDef);
@@ -64,11 +64,44 @@ public class Player extends Sprite {
                     setPosition(3, getY() + 55f);
                     body.getPosition().set(getX(), getY());
                 }else {
-                    setPosition(getX() + 48, getY());
-                    body.getPosition().set(getX(), getY());
+                    moveRight();
                 }
             }
         }
+    }
+
+
+    public void moveRight(){
+        final Vector2 target = new Vector2(getX() + 48, getY());
+        Vector2 direction = target.cpy().sub(getX(), getY()).nor();
+        float sclSpeed = 100f;
+        Vector2 velocity = direction.cpy().scl(sclSpeed);
+
+        System.out.println("X: " + getX() + "  Y:" + getY());
+        System.out.println("Target X: " + target.x + " Target Y:" + target.y);
+
+        body.setLinearVelocity(velocity);
+
+        new Thread(new Runnable() {
+            @Override
+            public synchronized void run() {
+                while (true){
+                    Vector2 position = new Vector2(getX() - GameInfo.WIDTH/2f, getY() - GameInfo.HEIGHT / 2f);
+                    if ( body.getPosition().dst2(target) < 2){
+                        System.out.println("Yakalandı :"+ getX());
+                        body.setLinearVelocity(0,0);
+                        break;
+                    }
+                }
+            }
+        }).start();
+
+
+    }
+
+
+    private void moveUp(){
+
     }
 
     public int getCurrentLocation(){

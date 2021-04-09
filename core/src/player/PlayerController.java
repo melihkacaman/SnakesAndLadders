@@ -8,7 +8,6 @@ import sceenes.PlayBoard;
 public class PlayerController {
 
     public void stepForward(Player player, int dice){
-        //player.movePlayer(dice);
         player.updatePlayer(dice);
     }
 

@@ -75,7 +75,7 @@ public class GameBoardButtons {
                 }, 1);
 
                 playerController.stepForward(players.get(0),dice);
-
+                //players.get(0).moveRight();
             }
         });
     }

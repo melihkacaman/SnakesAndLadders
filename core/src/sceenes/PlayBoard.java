@@ -1,6 +1,7 @@
 package sceenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -56,6 +57,7 @@ public class PlayBoard implements Screen {
 
     }
 
+
     @Override
     public void render(float delta) {
         HelpersMethods.clearScreen();
@@ -64,8 +66,11 @@ public class PlayBoard implements Screen {
         game.getBatch().begin();
 
         game.getBatch().draw(bg, 0,0);
+
+        player.updatePlayer();
+
         player.drawPlayer(game.getBatch());
-        //player.updatePlayer();
+
 
         game.getBatch().end();
 
