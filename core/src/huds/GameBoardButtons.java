@@ -22,6 +22,7 @@ import helpers.ImageButtonGenerator;
 import movement.Movement;
 import player.Player;
 import player.PlayerController;
+import sceenes.PlayBoard;
 
 import java.util.List;
 import java.util.Random;
@@ -40,16 +41,13 @@ public class GameBoardButtons {
     private ImageButton diceBtn;
     private Image diceValue;
 
-    private Movement movement;
     private int turnCount = 0;
 
-    public Movement getMovement() {
-        return movement;
-    }
-
-    public GameBoardButtons(GameMain game, List<Player> players) {
+    PlayBoard playBoard;
+    public GameBoardButtons(GameMain game, List<Player> players, PlayBoard playBoard) {
         this.game = game;
         this.players = players;
+        this.playBoard = playBoard;
 
         random = new Random();
         viewport = new FitViewport(GameInfo.WIDTH, GameInfo.HEIGHT, new OrthographicCamera());
@@ -87,7 +85,7 @@ public class GameBoardButtons {
 
                 Vector2 target = players.get(turnCount % 2).getTarget(dice);
                 players.get(turnCount % 2).turn = true;
-                movement = new Movement(players.get(turnCount % 2), dice, target);
+                playBoard.setMovement(players.get(turnCount % 2), dice, target);
 
                 turnCount++;
                 diceBtn.setTouchable(Touchable.disabled);
@@ -98,7 +96,7 @@ public class GameBoardButtons {
     public void setDiceButtonTouchable(){
         diceBtn.setTouchable(Touchable.enabled);
     }
-
+    public void setDiceButtonDisabled(){diceBtn.setTouchable(Touchable.disabled);}
     private void createAndPositionButtons() {
         pauseBtn = new ImageButtonGenerator("Buttons/Game/Pause.png");
         diceBtn = new ImageButtonGenerator("Dices/Dice.png");

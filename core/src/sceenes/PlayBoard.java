@@ -67,7 +67,7 @@ public class PlayBoard implements Screen {
         players.add(player1);
         players.add(player2);
 
-        buttons = new GameBoardButtons(game, players);
+        buttons = new GameBoardButtons(game, players, this);
     }
 
     private void fillStuffs(ArrayList<JSONMapObject> defaultMap) {
@@ -88,10 +88,13 @@ public class PlayBoard implements Screen {
     void move(){
         for (Player player: this.players) {
             if (player.turn){
-                if (buttons.getMovement().getTarget().dst2(player.getX(), player.getY()) < 5){
+                if (movement.getTarget().dst2(player.getX(), player.getY()) < 5){
                     player.setPosition(player.getX(), player.getY());
                     player.turn = false;
                     buttons.setDiceButtonTouchable();
+                    movement = null;
+
+                    checkLocationForStuff(player.getCurrentLocation(), player);
                 }else if (player.getX() > GameInfo.WIDTH - 20){
                     player.setPosition(3, player.getY() + 55);
                 }else {
@@ -101,17 +104,17 @@ public class PlayBoard implements Screen {
         }
     }
 
-    private boolean checkLocationForStuff(int location, Player player){
+    private void checkLocationForStuff(int location, Player player){
         for (Stuff stuff : stuffs){
             if (stuff.getBeginCell() == location){
                 if (stuff instanceof Ladder){
                     int abstractDice = stuff.getEndCell() - location;
                     player.turn = true;
+                    buttons.setDiceButtonDisabled();
                     Vector2 abstractTarget = player.getTarget(abstractDice);
-                    Movement movement = new Movement(player, abstractDice, abstractTarget);
-
+                    movement = new Movement(player, abstractDice, abstractTarget);
                 }else if (stuff instanceof Snake){
-
+                    // going backward
                 }
             }
         }
