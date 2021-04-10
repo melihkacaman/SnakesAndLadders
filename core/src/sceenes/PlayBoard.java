@@ -45,7 +45,7 @@ public class PlayBoard implements Screen {
 
         world = new World(new Vector2(0,0), true);
 
-        bg = new Texture("Backgrounds/Play Board.png");
+        bg = new Texture("Backgrounds/Play Board.png"); // message
 
         player1 = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
         player2 = new Player("Yusuf", world, game, 25, 188, PlayerCharacter.BLUEBIRD);
