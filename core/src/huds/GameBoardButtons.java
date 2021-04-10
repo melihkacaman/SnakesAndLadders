@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -89,8 +90,13 @@ public class GameBoardButtons {
                 movement = new Movement(players.get(turnCount % 2), dice, target);
 
                 turnCount++;
+                diceBtn.setTouchable(Touchable.disabled);
             }
         });
+    }
+
+    public void setDiceButtonTouchable(){
+        diceBtn.setTouchable(Touchable.enabled);
     }
 
     private void createAndPositionButtons() {

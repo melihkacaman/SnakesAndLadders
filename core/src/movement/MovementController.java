@@ -3,10 +3,10 @@ package movement;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class MovementContoller extends Thread {
+public class MovementController extends Thread {
     private Queue<Moveable> movements;
 
-    public MovementContoller(){
+    public MovementController(){
         this.movements = new LinkedList<>();
     }
 

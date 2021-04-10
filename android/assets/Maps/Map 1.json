@@ -1,0 +1,82 @@
+{
+  "values": [
+    {
+      "id": 1,
+      "type": "Ladder",
+      "firstValue": 3,
+      "secondValue": 51
+    },
+    {
+      "id": 2,
+      "type": "Ladder",
+      "firstValue": 6,
+      "secondValue": 27
+    },
+    {
+      "id": 3,
+      "type": "Ladder",
+      "firstValue": 20,
+      "secondValue": 60
+    },
+    {
+      "id": 4,
+      "type": "Snake",
+      "firstValue": 25,
+      "secondValue": 5
+    },
+    {
+      "id": 5,
+      "type": "Snake",
+      "firstValue": 34,
+      "secondValue": 1
+    },
+    {
+      "id": 6,
+      "type": "Ladder",
+      "firstValue": 36,
+      "secondValue": 55
+    },
+    {
+      "id": 7,
+      "type": "Snake",
+      "firstValue": 47,
+      "secondValue": 19
+    },
+    {
+      "id": 8,
+      "type": "Ladder",
+      "firstValue": 63,
+      "secondValue": 95
+    },
+    {
+      "id": 9,
+      "type": "Snake",
+      "firstValue": 65,
+      "secondValue": 52
+    },
+    {
+      "id": 10,
+      "type": "Ladder",
+      "firstValue": 68,
+      "secondValue": 98
+    },
+    {
+      "id": 11,
+      "type": "Snake",
+      "firstValue": 87,
+      "secondValue": 57
+    },
+    {
+      "id": 12,
+      "type": "Snake",
+      "firstValue": 91,
+      "secondValue": 61
+    },
+    {
+      "id": 13,
+      "type": "Snake",
+      "firstValue": 99,
+      "secondValue": 69
+    }
+  ]
+}

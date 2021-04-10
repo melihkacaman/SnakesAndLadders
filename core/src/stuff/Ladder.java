@@ -2,8 +2,8 @@ package stuff;
 
 public class Ladder extends Stuff {
 
-    public Ladder(int beginCell, int endCell) {
-        super(beginCell, endCell);
+    public Ladder(int id, int beginCell, int endCell) {
+        super(id, beginCell, endCell);
     }
 
     @Override

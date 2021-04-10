@@ -1,7 +1,5 @@
 package player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,9 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
-import movement.Moveable;
-import movement.MovementContoller;
-import sceenes.PlayBoard;
 
 public class Player extends Sprite {
     private String name;
@@ -48,10 +43,6 @@ public class Player extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        //fixtureDef.friction = 2000f;
-        //fixtureDef.density = 1000f;
-        // need density = mass
-
         Fixture fixture = body.createFixture(fixtureDef);
 
         shape.dispose();
@@ -72,7 +63,7 @@ public class Player extends Sprite {
                 result.x += 48;
             }
         }
-
+        currentLocation += dice;
         return result;
     }
 
