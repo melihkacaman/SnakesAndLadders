@@ -29,14 +29,15 @@ public class PlayBoard implements Screen {
     private GameBoardButtons buttons;
 
     // players
-    private Player player;
+    private Player player1;
+    private Player player2;
     List<Player> players;
 
     private World world;
 
     public PlayBoard(GameMain game) {
         this.game = game;
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
 
         camera = new OrthographicCamera(GameInfo.WIDTH, GameInfo.HEIGHT);
         camera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
@@ -46,8 +47,10 @@ public class PlayBoard implements Screen {
 
         bg = new Texture("Backgrounds/Play Board.png");
 
-        player = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
-        players.add(player);
+        player1 = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
+        player2 = new Player("Yusuf", world, game, 25, 188, PlayerCharacter.BLUEBIRD);
+        players.add(player1);
+        players.add(player2);
 
         buttons = new GameBoardButtons(game, players);
     }
@@ -55,6 +58,30 @@ public class PlayBoard implements Screen {
     @Override
     public void show() {
 
+    }
+
+    void move(){
+        if (player1.turn){
+            if (buttons.getMovement().getTarget().dst2(player1.getX(), player1.getY()) < 5){
+                player1.setPosition(player1.getX(), player1.getY());
+                player1.turn = false;
+            }else if (player1.getX() > GameInfo.WIDTH - 20){
+                player1.setPosition(3, player1.getY() + 55);
+            }else {
+                player1.translateX(1);
+            }
+        }
+
+        if (player2.turn){
+            if (buttons.getMovement().getTarget().dst2(player2.getX(), player2.getY()) < 5){
+                player2.setPosition(player2.getX(), player2.getY());
+                player2.turn = false;
+            }else if (player2.getX() > GameInfo.WIDTH - 20){
+                player2.setPosition(3, player2.getY() + 55);
+            }else {
+                player2.translateX(1);
+            }
+        }
     }
 
 
@@ -67,9 +94,11 @@ public class PlayBoard implements Screen {
 
         game.getBatch().draw(bg, 0,0);
 
-        player.updatePlayer();
 
-        player.drawPlayer(game.getBatch());
+
+        game.getBatch().draw(player1, player1.getX(), player1.getY());
+        game.getBatch().draw(player2, player2.getX(), player2.getY());
+        move();
 
 
         game.getBatch().end();

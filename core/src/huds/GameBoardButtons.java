@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,11 +18,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
+import movement.Movement;
 import player.Player;
 import player.PlayerController;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 public class GameBoardButtons {
     private GameMain game;
@@ -35,6 +38,13 @@ public class GameBoardButtons {
     private ImageButton pauseBtn;
     private ImageButton diceBtn;
     private Image diceValue;
+
+    private Movement movement;
+    private int turnCount = 0;
+
+    public Movement getMovement() {
+        return movement;
+    }
 
     public GameBoardButtons(GameMain game, List<Player> players) {
         this.game = game;
@@ -62,7 +72,7 @@ public class GameBoardButtons {
         diceBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                int dice = throwDice();
+                final int dice = throwDice();
                 System.out.println("Dices/Dice " + dice + ".png");
 
                 diceValue.setDrawable(new SpriteDrawable(new Sprite(new Texture("Dices/Dice " + dice + ".png"))));
@@ -74,8 +84,11 @@ public class GameBoardButtons {
                     }
                 }, 1);
 
-                playerController.stepForward(players.get(0),dice);
-                //players.get(0).moveRight();
+                Vector2 target = players.get(turnCount % 2).getTarget(dice);
+                players.get(turnCount % 2).turn = true;
+                movement = new Movement(players.get(turnCount % 2), dice, target);
+
+                turnCount++;
             }
         });
     }

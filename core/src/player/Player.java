@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
+import movement.Moveable;
+import movement.MovementContoller;
 import sceenes.PlayBoard;
 
 public class Player extends Sprite {
@@ -19,13 +21,16 @@ public class Player extends Sprite {
 
     private int currentLocation;
 
+    public boolean turn;
+
     public Player(String name, World world,GameMain game , float x, float y, PlayerCharacter character) {
         super(new Texture(character == PlayerCharacter.BLUEBIRD ? PlayerCharacter.getBlueBird() : PlayerCharacter.getRedBird()));
         setPosition(x - getWidth() / 2f, y - getHeight() / 2f);
+
         this.name = name;
         this.world = world;
         this.game = game;
-
+        this.turn = false;
         this.currentLocation = 1;
 
         createBody();
@@ -52,56 +57,23 @@ public class Player extends Sprite {
         shape.dispose();
     }
 
-    public void updatePlayer(){
-        this.setPosition(body.getPosition().x, body.getPosition().y);
+     public void updatePlayer(){
+         this.setPosition(body.getPosition().x, body.getPosition().y);
     }
 
-    public void updatePlayer(int dice){
-        if (dice > 0 && dice <= 6){
-            for (int i = 0; i < dice; i++){
-                float laterX = getX() + 48;
-                if (laterX > GameInfo.WIDTH - 20){
-                    setPosition(3, getY() + 55f);
-                    body.getPosition().set(getX(), getY());
-                }else {
-                    moveRight();
-                }
+    public Vector2 getTarget(int dice){
+        Vector2 result = new Vector2(getX(), getY());
+        for (int i = 1; i <= dice; i++) {
+            float laterX = result.x + 48;
+            if (laterX > GameInfo.WIDTH - 20) {
+                result.y = result.y + 55;
+                result.x = 3;
+            } else {
+                result.x += 48;
             }
         }
-    }
 
-
-    public void moveRight(){
-        final Vector2 target = new Vector2(getX() + 48, getY());
-        Vector2 direction = target.cpy().sub(getX(), getY()).nor();
-        float sclSpeed = 100f;
-        Vector2 velocity = direction.cpy().scl(sclSpeed);
-
-        System.out.println("X: " + getX() + "  Y:" + getY());
-        System.out.println("Target X: " + target.x + " Target Y:" + target.y);
-
-        body.setLinearVelocity(velocity);
-
-        new Thread(new Runnable() {
-            @Override
-            public synchronized void run() {
-                while (true){
-                    Vector2 position = new Vector2(getX() - GameInfo.WIDTH/2f, getY() - GameInfo.HEIGHT / 2f);
-                    if ( body.getPosition().dst2(target) < 2){
-                        System.out.println("Yakalandı :"+ getX());
-                        body.setLinearVelocity(0,0);
-                        break;
-                    }
-                }
-            }
-        }).start();
-
-
-    }
-
-
-    private void moveUp(){
-
+        return result;
     }
 
     public int getCurrentLocation(){
@@ -109,6 +81,8 @@ public class Player extends Sprite {
     }
 
     public void drawPlayer(SpriteBatch batch) {
-        batch.draw(this, getX(), getY());
+        game.getBatch().begin();
+        game.getBatch().draw(this, getX(), getY());
+        game.getBatch().end();
     }
 }
