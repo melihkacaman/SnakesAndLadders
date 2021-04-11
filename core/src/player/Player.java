@@ -10,6 +10,7 @@ import helpers.GameInfo;
 
 public class Player extends Sprite {
     private String name;
+    private PlayerCharacter character;
     private GameMain game;
     private World world;     // The world is the actual physics world that we are gonna put our player.
     private Body body;       // it's actual player body, manipulating player
@@ -22,6 +23,7 @@ public class Player extends Sprite {
         super(new Texture(character == PlayerCharacter.BLUEBIRD ? PlayerCharacter.getBlueBird() : PlayerCharacter.getRedBird()));
         setPosition(x - getWidth() / 2f, y - getHeight() / 2f);
 
+        this.character = character;
         this.name = name;
         this.world = world;
         this.game = game;
@@ -52,7 +54,7 @@ public class Player extends Sprite {
          this.setPosition(body.getPosition().x, body.getPosition().y);
     }
 
-    public Vector2 getTarget(int dice){
+    public Vector2 getTargetForward(int dice){
         Vector2 result = new Vector2(getX(), getY());
         for (int i = 1; i <= dice; i++) {
             float laterX = result.x + 48;
@@ -67,6 +69,21 @@ public class Player extends Sprite {
         return result;
     }
 
+    public Vector2 getTargetBackward(int step){
+        Vector2 result = new Vector2(getX(), getY());
+        for (int i = 1; i <= step; i++) {
+            float previousX = result.x - 48;
+            if (previousX < 20) {
+                result.y = result.y - 55;
+                result.x = GameInfo.WIDTH - 3f;
+            } else {
+                result.x -= 48;
+            }
+        }
+        currentLocation -= step;
+        return result;
+    }
+
     public int getCurrentLocation(){
         return this.currentLocation;
     }
@@ -75,5 +92,13 @@ public class Player extends Sprite {
         game.getBatch().begin();
         game.getBatch().draw(this, getX(), getY());
         game.getBatch().end();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PlayerCharacter getCharacter() {
+        return character;
     }
 }
