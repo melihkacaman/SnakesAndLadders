@@ -15,6 +15,7 @@ import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import helpers.GameInfo;
 import sceenes.PlayBoard;
+import sceenes.PlayerInfo;
 
 public class MainMenuButtons {
     private GameMain game;
@@ -40,7 +41,7 @@ public class MainMenuButtons {
         playBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new PlayBoard(game));
+                game.setScreen(new PlayerInfo(game));
             }
         });
 

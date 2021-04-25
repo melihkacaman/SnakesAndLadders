@@ -20,4 +20,8 @@ public class DefaultFontGenerator {
     public Label getNewLabel(String text, Color color){
         return new Label(text, new Label.LabelStyle(font,color));
     }
+
+    public BitmapFont getFont(){
+        return this.font;
+    }
 }
