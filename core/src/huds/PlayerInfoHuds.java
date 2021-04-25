@@ -1,5 +1,6 @@
 package huds;
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.Color;
@@ -23,6 +24,8 @@ import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
 import player.Player;
+
+import java.io.IOException;
 
 public class PlayerInfoHuds {
     private GameMain gameMain;
@@ -53,8 +56,13 @@ public class PlayerInfoHuds {
             public void changed(ChangeEvent event, Actor actor) {
                 String userName = userNameTxt.getText();
                 if(!userName.isEmpty()){
-                    // Connect server
-                    // save this user
+                    try {
+                        Client client = new Client("127.0.0.1", 5000, userName);
+
+                        readyBtn.setLayoutEnabled(false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }
