@@ -23,7 +23,7 @@ public class SClient {
 
     public void listen(){
         clientListenThread.start();
-        System.out.println("Client Listening...");
+        System.out.println("Client Listening...");  // client listening 
     }
 
     public Socket getSocket() {
