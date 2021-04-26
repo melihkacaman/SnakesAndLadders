@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Server {
     private ServerSocket socket;
     private int port;
     private ListenThread listenThread;
 
-    private static List<SClient> users = new ArrayList<>();
+    private static Queue<SClient> users = new LinkedList<>();
 
     public Server(int port) throws IOException {
         this.port = port;
@@ -33,6 +35,10 @@ public class Server {
     protected ServerSocket getSocket() {
         return socket;
     }
+
+    protected Queue<SClient> getUsers(){
+        return users;
+    }
 }
 
 class ListenThread extends Thread {
@@ -50,6 +56,7 @@ class ListenThread extends Thread {
                 Socket client = server.getSocket().accept(); // blocking function
                 SClient sClient = new SClient(client);
                 sClient.listen();
+
                 server.addUser(sClient);
             } catch (IOException e) {
                 e.printStackTrace();

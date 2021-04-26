@@ -11,6 +11,8 @@ public class SClient {
     private ObjectInputStream cInput;
     private ClientListenThread clientListenThread;
 
+    private SClient pair;
+
     public SClient(Socket socket) throws IOException {
         this.socket = socket;
 
@@ -23,7 +25,7 @@ public class SClient {
 
     public void listen(){
         clientListenThread.start();
-        System.out.println("Client Listening...");  // client listening 
+        System.out.println("Client Listening...");  // client listening
     }
 
     public Socket getSocket() {
@@ -36,6 +38,18 @@ public class SClient {
 
     public ObjectInputStream getcInput() {
         return cInput;
+    }
+
+    public SClient getPair() {
+        return pair;
+    }
+
+    public void setPair(SClient pair) {
+        this.pair = pair;
+    }
+
+    public boolean hasPair(){
+        return pair != null;
     }
 }
 
