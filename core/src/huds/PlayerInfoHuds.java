@@ -36,6 +36,7 @@ public class PlayerInfoHuds {
     private ImageButton readyBtn;
     private TextField userNameTxt;
     private Label userNameInfo;
+    private Label waitingLabel;
 
     public PlayerInfoHuds(GameMain gameMain) {
         this.gameMain = gameMain;
@@ -58,8 +59,11 @@ public class PlayerInfoHuds {
                 if(!userName.isEmpty()){
                     try {
                         Client client = new Client("127.0.0.1", 5000, userName);
+                        new Thread(client).start();
 
                         readyBtn.setLayoutEnabled(false);
+
+                        // TO DO: Give information to the user on the screen as a message.
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -70,8 +74,10 @@ public class PlayerInfoHuds {
     }
 
     void createAndPositionComponents() {
-        userNameInfo = defaultFontGenerator.getNewLabel("Give your name", Color.valueOf("#fccd37"));
+        userNameInfo = defaultFontGenerator.getNewLabel("Give your name", DefaultFontGenerator.getDefaultColor());
         readyBtn = new ImageButtonGenerator("Buttons/Ready.png");
+        waitingLabel = defaultFontGenerator.getNewLabel("", DefaultFontGenerator.getDefaultColor());
+
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
         style.font = defaultFontGenerator.getFont();
         style.fontColor = Color.BLUE;
@@ -79,16 +85,15 @@ public class PlayerInfoHuds {
         userNameTxt = new TextField("", style);
 
         userNameInfo.setPosition(GameInfo.WIDTH /2f - 200, GameInfo.HEIGHT/2f + 70);
-
+        waitingLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
         readyBtn.setPosition(GameInfo.WIDTH /2f, GameInfo.HEIGHT/2f - 70);
-
         userNameTxt.setPosition(20, GameInfo.HEIGHT/2f);
         userNameTxt.setSize(GameInfo.WIDTH - 40, 50);
-
 
         stage.addActor(userNameInfo);
         stage.addActor(readyBtn);
         stage.addActor(userNameTxt);
+        stage.addActor(waitingLabel);
     }
 
 

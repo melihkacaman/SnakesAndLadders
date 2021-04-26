@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Queue;
 
@@ -30,7 +31,12 @@ class Mapping extends Thread {
                 client1.setPair(client2);
                 client2.setPair(client1);
 
-
+                try {
+                    client1.getcOutput().writeObject(client2.getSocket());
+                    client2.getcOutput().writeObject(client1.getSocket());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

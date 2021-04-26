@@ -24,4 +24,8 @@ public class DefaultFontGenerator {
     public BitmapFont getFont(){
         return this.font;
     }
+
+    static public Color getDefaultColor(){
+        return Color.valueOf("#fccd37");
+    }
 }

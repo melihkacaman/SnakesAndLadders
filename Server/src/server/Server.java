@@ -14,14 +14,17 @@ public class Server {
     private ServerSocket socket;
     private int port;
     private ListenThread listenThread;
+    private Mapping mapping;
 
     private static Queue<SClient> users = new LinkedList<>();
 
     public Server(int port) throws IOException {
         this.port = port;
         this.socket =new ServerSocket(port);
+        this.mapping = new Mapping(users);
 
         listenThread = new ListenThread(this);
+        this.mapping.start();
     }
 
     public void listen(){
@@ -55,7 +58,6 @@ class ListenThread extends Thread {
                 System.out.println("Accepting state");
                 Socket client = server.getSocket().accept(); // blocking function
                 SClient sClient = new SClient(client);
-                sClient.listen();
 
                 server.addUser(sClient);
             } catch (IOException e) {
