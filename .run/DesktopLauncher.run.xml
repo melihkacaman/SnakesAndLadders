@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="DesktopLauncher" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="com.melihkacaman.snakesandladders.desktop.DesktopLauncher" />
-    <module name="desktop" />
+    <module name="Snakes_And_Ladders.desktop" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/android/assets" />
     <extension name="coverage" sample_coverage="false">
       <pattern>
         <option name="PATTERN" value="com.melihkacaman.snakesandladders.desktop.*" />

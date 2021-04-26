@@ -47,7 +47,7 @@ class ListenThread extends Thread {
         while (!server.getSocket().isClosed()){
             try {
                 System.out.println("Accepting state");
-                Socket client = server.getSocket().accept(); // blocing function
+                Socket client = server.getSocket().accept(); // blocking function
                 SClient sClient = new SClient(client);
                 sClient.listen();
                 server.addUser(sClient);
