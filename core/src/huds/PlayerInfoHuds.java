@@ -21,6 +21,7 @@ import client.PairProcess;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
+import sceenes.HandShake;
 
 import java.io.IOException;
 
@@ -65,7 +66,7 @@ public class PlayerInfoHuds {
                         client.contactListener(new PairProcess() {
                             @Override
                             public void contactPair() {
-                                // handShakink screen and userName sending
+                                gameMain.setScreen(new HandShake(gameMain));
                             }
                         });
 
