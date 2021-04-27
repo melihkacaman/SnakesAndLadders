@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -61,11 +62,14 @@ public class PlayerInfoHuds {
                         Client client = new Client("127.0.0.1", 5000, userName);
                         new Thread(client).start();
 
-                        readyBtn.setLayoutEnabled(false);
+                        readyBtn.setTouchable(Touchable.disabled);
 
-                        // TO DO: Give information to the user on the screen as a message.
+                        waitingLabel.setText("Bekleniyor.");
+
+
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.err.println("[PlayerInfoHuds.class] Client couldn't connect to the server.");
+                        System.err.println("[PlayerInfoHuds.class] Message: " + e.getMessage());
                     }
 
                 }
@@ -76,7 +80,7 @@ public class PlayerInfoHuds {
     void createAndPositionComponents() {
         userNameInfo = defaultFontGenerator.getNewLabel("Give your name", DefaultFontGenerator.getDefaultColor());
         readyBtn = new ImageButtonGenerator("Buttons/Ready.png");
-        waitingLabel = defaultFontGenerator.getNewLabel("", DefaultFontGenerator.getDefaultColor());
+        waitingLabel = defaultFontGenerator.getNewLabel("", Color.DARK_GRAY);
 
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
         style.font = defaultFontGenerator.getFont();
@@ -85,7 +89,7 @@ public class PlayerInfoHuds {
         userNameTxt = new TextField("", style);
 
         userNameInfo.setPosition(GameInfo.WIDTH /2f - 200, GameInfo.HEIGHT/2f + 70);
-        waitingLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f);
+        waitingLabel.setPosition(GameInfo.WIDTH / 2f - 200, GameInfo.HEIGHT / 2f - 150);
         readyBtn.setPosition(GameInfo.WIDTH /2f, GameInfo.HEIGHT/2f - 70);
         userNameTxt.setPosition(20, GameInfo.HEIGHT/2f);
         userNameTxt.setSize(GameInfo.WIDTH - 40, 50);

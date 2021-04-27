@@ -3,14 +3,16 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 public class Client implements Runnable {
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
-    private Socket pair = null;
+    private InetSocketAddress pair = null;
 
     private String serverIp;
     private int port;
@@ -30,15 +32,19 @@ public class Client implements Runnable {
     public void run() {
         while (!socket.isClosed()){
             try {
-                this.pair = (Socket) input.readObject();  // blocking
-                System.out.println("Bulundu");
+                this.pair = (InetSocketAddress) input.readObject();  // blocking
+
+                int port = pair.getPort();
+                String IP = pair.getAddress().getHostAddress();
+
+                System.out.println("[Client in Core Module] Target socket is " + IP + "/" + port);
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("[Client in Core Module] " + e.getMessage());
             }
         }
     }
 
-    public Socket getPair() {
+    public InetSocketAddress getPair() {
         return pair;
     }
 }
