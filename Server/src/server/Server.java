@@ -5,9 +5,7 @@ import client.SClient;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class Server {
@@ -16,12 +14,13 @@ public class Server {
     private ListenThread listenThread;
     private Mapping mapping;
 
-    private static Queue<SClient> users = new LinkedList<>();
+    private static Queue<SClient> usersWithoutPair = new LinkedList<>();
+    private static LinkedList<SClient> allUsers = new LinkedList<>();
 
     public Server(int port) throws IOException {
         this.port = port;
         this.socket =new ServerSocket(port);
-        this.mapping = new Mapping(users);
+        this.mapping = new Mapping(usersWithoutPair);
 
         listenThread = new ListenThread(this);
         this.mapping.start();
@@ -31,8 +30,9 @@ public class Server {
         listenThread.start();
     }
 
-    protected void addUser(SClient user){
-        users.add(user);
+    protected void addNewUser(SClient user){
+        usersWithoutPair.add(user);
+        allUsers.add(user);
     }
 
     protected ServerSocket getSocket() {
@@ -40,7 +40,7 @@ public class Server {
     }
 
     protected Queue<SClient> getUsers(){
-        return users;
+        return usersWithoutPair;
     }
 }
 
@@ -58,8 +58,9 @@ class ListenThread extends Thread {
                 System.out.println("Accepting state");
                 Socket client = server.getSocket().accept(); // blocking function
                 SClient sClient = new SClient(client);
+                sClient.listen();
 
-                server.addUser(sClient);
+                server.addNewUser(sClient);
             } catch (IOException e) {
                 e.printStackTrace();
             }

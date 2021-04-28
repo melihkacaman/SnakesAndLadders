@@ -10,6 +10,7 @@ import com.melihkacaman.snakesandladders.GameMain;
 import com.melihkacaman.snakesandladders.HelpersMethods;
 import helpers.GameInfo;
 import huds.PlayerInfoHuds;
+import model.Pair;
 
 import java.awt.*;
 
@@ -19,8 +20,12 @@ public class PlayerInfo implements Screen {
     private Viewport viewport;
     private PlayerInfoHuds playerInfoHuds;
 
+    private boolean readyToStart = false;
+
     private Texture background;
     private Label userName;
+    private Pair pair;
+
     public PlayerInfo(GameMain gameMain) {
         this.gameMain = gameMain;
 
@@ -31,7 +36,12 @@ public class PlayerInfo implements Screen {
         viewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, camera);
 
         background = new Texture("Backgrounds/Wait Screen.png");
-        playerInfoHuds =  new PlayerInfoHuds(gameMain);
+        playerInfoHuds =  new PlayerInfoHuds(gameMain, this);
+    }
+
+    public void setReadyToStartTrue(Pair pair){
+        readyToStart = true;
+        this.pair = pair;
     }
 
     @Override
@@ -39,9 +49,17 @@ public class PlayerInfo implements Screen {
 
     }
 
+    private void update() {
+        if (readyToStart) {
+            gameMain.setScreen(new HandShake(gameMain, pair));
+        }
+    }
+
     @Override
     public void render(float delta) {
         HelpersMethods.clearScreen();
+
+        update();
 
         gameMain.getBatch().begin();
         gameMain.getBatch().draw(background, 0, 0);
@@ -73,6 +91,7 @@ public class PlayerInfo implements Screen {
 
     @Override
     public void dispose() {
-
+        background.dispose();
+        playerInfoHuds.getStage().dispose();
     }
 }

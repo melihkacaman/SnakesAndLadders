@@ -17,11 +17,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 
-import client.PairProcess;
+import client.TCPListener;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
-import sceenes.HandShake;
+import model.Pair;
+import sceenes.PlayerInfo;
 
 import java.io.IOException;
 
@@ -36,9 +37,12 @@ public class PlayerInfoHuds {
     private Label userNameInfo;
     private Label waitingLabel;
 
-    public PlayerInfoHuds(GameMain gameMain) {
+    private PlayerInfo playerInfo;
+
+    public PlayerInfoHuds(GameMain gameMain, PlayerInfo playerInfo) {
         this.gameMain = gameMain;
         defaultFontGenerator = new DefaultFontGenerator(40);
+        this.playerInfo = playerInfo;
 
         viewport = new FitViewport(GameInfo.WIDTH, GameInfo.HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, gameMain.getBatch());
@@ -63,10 +67,10 @@ public class PlayerInfoHuds {
 
                         waitingLabel.setText("Bekleniyor.");
 
-                        client.contactListener(new PairProcess() {
+                        client.contactListener(new TCPListener() {
                             @Override
-                            public void contactPair() {
-                                gameMain.setScreen(new HandShake(gameMain));
+                            public void contactPair(Pair pair) {
+                                playerInfo.setReadyToStartTrue(pair);
                             }
                         });
 

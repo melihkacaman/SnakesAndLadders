@@ -76,5 +76,6 @@ public class MainMenu implements Screen {
     public void dispose() {
         background.dispose();
         buttons.getStage().dispose();
+
     }
 }

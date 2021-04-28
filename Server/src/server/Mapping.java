@@ -31,14 +31,6 @@ class Mapping extends Thread {
                 //mapped
                 client1.setPair(client2);
                 client2.setPair(client1);
-
-                try {
-                    client1.getcOutput().writeObject(client2.getSocket().getRemoteSocketAddress());
-                    client2.getcOutput().writeObject(client1.getSocket().getRemoteSocketAddress());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
