@@ -1,1 +1,6 @@
+include ':Server'
+include ':Entity'
 include 'desktop', 'android', 'core'
+include 'Model'
+include 'Model'
+include ':Model'

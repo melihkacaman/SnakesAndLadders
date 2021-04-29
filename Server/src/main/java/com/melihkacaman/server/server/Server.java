@@ -1,6 +1,7 @@
-package server;
+package com.melihkacaman.server.server;
 
-import client.SClient;
+
+import com.melihkacaman.server.client.SClient;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import com.melihkacaman.snakesandladders.HelpersMethods;
+
+import client.ClientManager;
 import helpers.GameInfo;
 import huds.PlayerInfoHuds;
 import model.Pair;
@@ -25,6 +27,7 @@ public class PlayerInfo implements Screen {
     private Texture background;
     private Label userName;
     private Pair pair;
+    private ClientManager clientManager;
 
     public PlayerInfo(GameMain gameMain) {
         this.gameMain = gameMain;
@@ -39,9 +42,10 @@ public class PlayerInfo implements Screen {
         playerInfoHuds =  new PlayerInfoHuds(gameMain, this);
     }
 
-    public void setReadyToStartTrue(Pair pair){
+    public void setReadyToStartTrue(Pair pair, ClientManager clientManager){
         readyToStart = true;
         this.pair = pair;
+        this.clientManager = clientManager;
     }
 
     @Override
@@ -51,7 +55,7 @@ public class PlayerInfo implements Screen {
 
     private void update() {
         if (readyToStart) {
-            gameMain.setScreen(new HandShake(gameMain, pair));
+            gameMain.setScreen(new HandShake(gameMain, pair, clientManager));
         }
     }
 

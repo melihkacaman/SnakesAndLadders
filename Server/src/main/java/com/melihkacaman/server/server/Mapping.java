@@ -1,11 +1,12 @@
-package server;
+package com.melihkacaman.server.server;
+
+import com.melihkacaman.server.client.SClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 import java.util.Queue;
 
-import client.SClient;
 
 class Mapping extends Thread {
 

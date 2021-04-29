@@ -50,8 +50,8 @@ public class Client implements Runnable {
             this.pairUserName = name.toString();
 
             Pair pair = new Pair(pairUserName, selfUserName);
-
-            listeners.peek().contactPair(pair);
+            ClientManager clientManager = new ClientManager(output, input);
+            listeners.peek().contactPair(pair, clientManager);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

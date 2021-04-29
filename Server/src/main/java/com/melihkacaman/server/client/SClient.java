@@ -1,4 +1,4 @@
-package client;
+package com.melihkacaman.server.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

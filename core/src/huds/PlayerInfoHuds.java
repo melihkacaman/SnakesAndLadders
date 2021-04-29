@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 
+import client.ClientManager;
 import client.TCPListener;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
@@ -69,8 +70,8 @@ public class PlayerInfoHuds {
 
                         client.contactListener(new TCPListener() {
                             @Override
-                            public void contactPair(Pair pair) {
-                                playerInfo.setReadyToStartTrue(pair);
+                            public void contactPair(Pair pair, ClientManager clientManager) {
+                                playerInfo.setReadyToStartTrue(pair, clientManager);
                             }
                         });
 

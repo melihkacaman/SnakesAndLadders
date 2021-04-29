@@ -1,4 +1,4 @@
-package server;
+package com.melihkacaman.server.server;
 
 import java.io.IOException;
 
