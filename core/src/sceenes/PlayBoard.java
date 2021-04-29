@@ -13,6 +13,7 @@ import com.melihkacaman.snakesandladders.HelpersMethods;
 import helpers.GameInfo;
 import helpers.JSONMapObject;
 import huds.GameBoardButtons;
+import model.Pair;
 import movement.Movement;
 import player.Player;
 import player.PlayerCharacter;
@@ -32,6 +33,7 @@ public class PlayBoard implements Screen {
     private ArrayList<Stuff> stuffs;
 
     // players
+    private Pair pair;
     private Player player1;
     private Player player2;
     List<Player> players;
@@ -45,10 +47,11 @@ public class PlayBoard implements Screen {
 
     private World world;
 
-    public PlayBoard(GameMain game) {
+    public PlayBoard(GameMain game, Pair pair) {
         this.game = game;
         this.players = new ArrayList<>();
         this.stuffs = new ArrayList<>();
+        this.pair = pair;
 
         fillStuffs(game.getDefaultMap());
 

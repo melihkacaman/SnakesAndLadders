@@ -1,5 +1,6 @@
 package sceenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -34,8 +36,9 @@ public class HandShake implements Screen {
     private ClientManager clientManager;
 
     private Texture background;
-    BitmapFont font;
-    ImageButton letsBegin;
+    private BitmapFont font;
+    private Stage stage;
+    private ImageButton letsBegin;
 
     DefaultFontGenerator defaultFontGenerator;
 
@@ -53,6 +56,8 @@ public class HandShake implements Screen {
         camera.position.set(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, 0);
 
         viewport = new StretchViewport(GameInfo.WIDTH, GameInfo.HEIGHT, camera);
+        stage = new Stage(viewport,gameMain.getBatch());
+        Gdx.input.setInputProcessor(stage);
 
         background = new Texture("Backgrounds/Hand Shake.png");
 
@@ -64,12 +69,22 @@ public class HandShake implements Screen {
         letsBegin.setSize(letsBegin.getWidth() + 150, letsBegin.getHeight());
         letsBegin.setPosition(GameInfo.WIDTH /2f - letsBegin.getWidth() / 2f, GameInfo.HEIGHT / 2f - 200);
 
+        stage.addActor(letsBegin);
+
         letsBegin.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                clientManager.sendStartSignal();
+                boolean res = clientManager.sendStartSignal();
+                if (res){
+                    System.out.println("ACK TRUE GELDİ");
+                    gameMain.setScreen(new PlayBoard(gameMain, pair));
+                }else {
+                    // ToDo : back to main menu
+                }
             }
         });
+
+
     }
 
     @Override

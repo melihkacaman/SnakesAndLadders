@@ -1,5 +1,8 @@
 package com.melihkacaman.server.client;
 
+import com.melihkacaman.entity.AckSignal;
+import com.melihkacaman.entity.StartingSignal;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,6 +13,7 @@ public class SClient {
     private ObjectOutputStream cOutput;
     private ObjectInputStream cInput;
     private String userName;
+    protected boolean startingGame = false;
 
     private SClient pair;
 
@@ -66,6 +70,7 @@ public class SClient {
 class ClientListenThread extends Thread {
     private final SClient sClient;
 
+
     ClientListenThread(SClient sClient){
         this.sClient = sClient;
     }
@@ -82,8 +87,29 @@ class ClientListenThread extends Thread {
 
             // mapped
             sClient.getcOutput().writeObject(sClient.getPair().getUserName());
-            while (!sClient.getSocket().isClosed()){
 
+             // TODO: Might be unnecessary
+            while (!sClient.getSocket().isClosed()) {
+                Object obj = sClient.getcInput().readObject();
+                if (obj instanceof StartingSignal){
+                    if (obj == StartingSignal.WORK){
+                        sClient.startingGame = true;
+                        break;
+                    }
+                }
+                else {
+                    // Todo: send message to client
+                    break;
+                }
+            }
+
+            // start Game
+            if (sClient.getPair().startingGame && sClient.startingGame){
+                sClient.getcOutput().writeObject(AckSignal.ACK);
+                sClient.getPair().getcOutput().writeObject(AckSignal.ACK);
+                while (!sClient.getSocket().isClosed()){
+
+                }
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
