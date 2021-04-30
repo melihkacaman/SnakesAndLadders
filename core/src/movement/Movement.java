@@ -1,9 +1,12 @@
 package movement;
 
 import com.badlogic.gdx.math.Vector2;
+
+import java.io.Serializable;
+
 import player.Player;
 
-public class Movement {
+public class Movement implements Serializable {
     private Player player;
     private int dice;
     private Vector2 target;

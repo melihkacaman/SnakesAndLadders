@@ -1,14 +1,18 @@
 package client;
 
+import com.melihkacaman.entity.Pair;
+import com.melihkacaman.entity.PairMovement;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import model.Pair;
+import model.Couple;
+import movement.Movement;
+import sceenes.PlayBoard;
 
 public class Client implements Runnable {
     private Socket sSocket;
@@ -19,7 +23,8 @@ public class Client implements Runnable {
     private int port;
 
     private String selfUserName;
-    private String pairUserName;
+
+    private ClientManager clientManager;
 
     private Queue<TCPListener> listeners;
 
@@ -46,19 +51,40 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            Object name = input.readObject(); // pair userName blocking
-            this.pairUserName = name.toString();
+            Pair pair = (Pair) input.readObject(); // pair userName blocking
 
-            Pair pair = new Pair(pairUserName, selfUserName);
-            ClientManager clientManager = new ClientManager(output, input);
-            listeners.peek().contactPair(pair, clientManager);
+            Couple couple = new Couple(pair, selfUserName);
+            clientManager = new ClientManager(sSocket,output, input);
+            listeners.peek().contactPair(couple, clientManager);
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        while (!sSocket.isClosed()){
 
+        while (!clientManager.isGameStarted){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        System.out.println("IS GAME STARTED ICINDE...");
+        while (!sSocket.isClosed()){
+            System.out.println("READ OBJECT OLDU");
+            try {
+                Object obj = input.readObject();
+                if (obj instanceof PairMovement){
+                    PairMovement pairMovement = (PairMovement) obj;
+                    // clientManager.activeMovement = new Movement()
+                    System.out.println("ACTIVE MOVEMENT DOLDU");
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void contactListener(TCPListener process){

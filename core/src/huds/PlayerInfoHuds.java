@@ -22,7 +22,7 @@ import client.TCPListener;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
-import model.Pair;
+import model.Couple;
 import sceenes.PlayerInfo;
 
 import java.io.IOException;
@@ -70,8 +70,8 @@ public class PlayerInfoHuds {
 
                         client.contactListener(new TCPListener() {
                             @Override
-                            public void contactPair(Pair pair, ClientManager clientManager) {
-                                playerInfo.setReadyToStartTrue(pair, clientManager);
+                            public void contactPair(Couple couple, ClientManager clientManager) {
+                                playerInfo.setReadyToStartTrue(couple, clientManager);
                             }
                         });
 

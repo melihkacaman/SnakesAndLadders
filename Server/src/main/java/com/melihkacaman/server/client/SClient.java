@@ -1,6 +1,8 @@
 package com.melihkacaman.server.client;
 
 import com.melihkacaman.entity.AckSignal;
+import com.melihkacaman.entity.Pair;
+import com.melihkacaman.entity.PairMovement;
 import com.melihkacaman.entity.StartingSignal;
 
 import java.io.IOException;
@@ -8,7 +10,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import movement.Movement;
+
 public class SClient {
+    private int id;
     private Socket socket;
     private ObjectOutputStream cOutput;
     private ObjectInputStream cInput;
@@ -19,9 +24,9 @@ public class SClient {
 
     private ClientListenThread clientListenThread;
 
-    public SClient(Socket socket) throws IOException {
+    public SClient(Socket socket, int id) throws IOException {
         this.socket = socket;
-
+        this.id = id;
         cOutput = new ObjectOutputStream(this.socket.getOutputStream());
         cInput = new ObjectInputStream(this.socket.getInputStream());
 
@@ -65,6 +70,10 @@ public class SClient {
     public String getUserName(){
         return this.userName;
     }
+
+    public int getId() {
+        return id;
+    }
 }
 
 class ClientListenThread extends Thread {
@@ -86,7 +95,8 @@ class ClientListenThread extends Thread {
             }
 
             // mapped
-            sClient.getcOutput().writeObject(sClient.getPair().getUserName());
+            Pair pair = new Pair(sClient.getPair().getId(), sClient.getPair().getUserName(),sClient.getId());
+            sClient.getcOutput().writeObject(pair);
 
              // TODO: Might be unnecessary
             while (!sClient.getSocket().isClosed()) {
@@ -108,7 +118,12 @@ class ClientListenThread extends Thread {
                 sClient.getcOutput().writeObject(AckSignal.ACK);
                 sClient.getPair().getcOutput().writeObject(AckSignal.ACK);
                 while (!sClient.getSocket().isClosed()){
-
+                    Object obj = sClient.getcInput().readObject();
+                    if(obj instanceof PairMovement){
+                      if ((((PairMovement) obj).getId() == sClient.getId())) {
+                          sClient.getcOutput().writeObject(obj);
+                      }
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException | InterruptedException e) {

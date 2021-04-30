@@ -11,4 +11,6 @@ dependencies {
     implementation project(path: ':Entity')
     implementation project(path: ':Entity')
     implementation project(path: ':Entity')
+    implementation project(path: ':core')
+    implementation project(path: ':core')
 }

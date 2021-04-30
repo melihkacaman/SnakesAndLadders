@@ -8,15 +8,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.melihkacaman.entity.CustomVector;
+import com.melihkacaman.entity.PairMovement;
 import com.melihkacaman.snakesandladders.GameMain;
 import com.melihkacaman.snakesandladders.HelpersMethods;
+
+import client.ClientManager;
 import helpers.GameInfo;
 import helpers.JSONMapObject;
 import huds.GameBoardButtons;
-import model.Pair;
+import model.Couple;
 import movement.Movement;
 import player.Player;
-import player.PlayerCharacter;
 import stuff.Ladder;
 import stuff.Snake;
 import stuff.Stuff;
@@ -33,25 +36,30 @@ public class PlayBoard implements Screen {
     private ArrayList<Stuff> stuffs;
 
     // players
-    private Pair pair;
-    private Player player1;
-    private Player player2;
+    private Couple couple;
+    private Player playerSelf;
+    private Player playerPair;
     List<Player> players;
     private boolean backward = false;
+    private ClientManager clientManager;
 
     public void setMovement(Player player, int dice, Vector2 target) {
         this.movement = new Movement(player, dice, target);
+        if (couple.getSelfId() != player.getId()){
+            clientManager.sendMovement(new PairMovement(player.getId(), dice, new CustomVector(target.x, target.y)));
+        }
     }
 
     private Movement movement;
 
     private World world;
 
-    public PlayBoard(GameMain game, Pair pair) {
+    public PlayBoard(GameMain game, Couple couple, ClientManager clientManager) {
         this.game = game;
         this.players = new ArrayList<>();
         this.stuffs = new ArrayList<>();
-        this.pair = pair;
+        this.couple = couple;
+        this.clientManager = clientManager;
 
         fillStuffs(game.getDefaultMap());
 
@@ -63,12 +71,12 @@ public class PlayBoard implements Screen {
 
         bg = new Texture("Backgrounds/Play Board.png"); // message
 
-        player1 = new Player("Melih", world, game, 25,188, PlayerCharacter.REDBIRD);
-        player2 = new Player("Yusuf", world, game, 25, 188, PlayerCharacter.BLUEBIRD);
-        players.add(player1);
-        players.add(player2);
+        playerSelf = new Player(couple.getSelfUserName(), world, game, 25,188, couple.getSelfCharacter(),couple.getSelfId());
+        playerPair = new Player(couple.getPairUserName(), world, game, 25, 188, couple.getPairCharacter(), couple.getPair().getId());
+        players.add(playerSelf);
+        players.add(playerPair);
 
-        buttons = new GameBoardButtons(game, players, this);
+        buttons = new GameBoardButtons(game, players, this,couple, clientManager);
     }
 
     private void fillStuffs(ArrayList<JSONMapObject> defaultMap) {
@@ -152,8 +160,8 @@ public class PlayBoard implements Screen {
 
 
 
-        game.getBatch().draw(player1, player1.getX(), player1.getY());
-        game.getBatch().draw(player2, player2.getX(), player2.getY());
+        game.getBatch().draw(playerSelf, playerSelf.getX(), playerSelf.getY());
+        game.getBatch().draw(playerPair, playerPair.getX(), playerPair.getY());
         move();
         buttons.updateTopLabels();
 

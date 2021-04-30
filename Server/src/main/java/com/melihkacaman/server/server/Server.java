@@ -47,6 +47,7 @@ public class Server {
 
 class ListenThread extends Thread {
     private Server server;
+    private static int count = 1;
 
     protected ListenThread(Server server){
         this.server = server;
@@ -58,10 +59,11 @@ class ListenThread extends Thread {
             try {
                 System.out.println("Accepting state");
                 Socket client = server.getSocket().accept(); // blocking function
-                SClient sClient = new SClient(client);
+                SClient sClient = new SClient(client, count);
                 sClient.listen();
 
                 server.addNewUser(sClient);
+                count++;
             } catch (IOException e) {
                 e.printStackTrace();
             }

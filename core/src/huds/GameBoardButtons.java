@@ -20,9 +20,13 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
+
+import client.ClientManager;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
+import model.Couple;
+import movement.Movement;
 import player.Player;
 import player.PlayerCharacter;
 import player.PlayerController;
@@ -40,6 +44,8 @@ public class GameBoardButtons {
     private Random random;
     private PlayerController playerController;
     private List<Player> players;
+    private Couple couple;
+    private ClientManager clientManager;
 
     private ImageButton pauseBtn;
     private ImageButton diceBtn;
@@ -51,11 +57,13 @@ public class GameBoardButtons {
     private Label blueName, blueLocation;
     
     PlayBoard playBoard;
-    public GameBoardButtons(GameMain game, List<Player> players, PlayBoard playBoard) {
+    public GameBoardButtons(GameMain game, List<Player> players, PlayBoard playBoard, Couple couple, ClientManager clientManager) {
         this.game = game;
         this.players = players;
         this.playBoard = playBoard;
         this.defaultFontGenerator = new DefaultFontGenerator(35);
+        this.couple = couple;
+        this.clientManager = clientManager;   // Todo: will be deleted
 
         random = new Random();
         viewport = new FitViewport(GameInfo.WIDTH, GameInfo.HEIGHT, new OrthographicCamera());
@@ -67,6 +75,8 @@ public class GameBoardButtons {
         createAndPositionLabels();
         createAndPositionButtons();
         addListenersToButtons();
+
+        players.get(0).diceTurn = true;
     }
 
     private void createAndPositionLabels() {
@@ -114,7 +124,7 @@ public class GameBoardButtons {
         pauseBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // Pause the game
+                // Todo: Pause the game
             }
         });
 
@@ -122,25 +132,30 @@ public class GameBoardButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 final int dice = throwDice();
-                System.out.println("Dices/Dice " + dice + ".png");
 
-                diceValue.setDrawable(new SpriteDrawable(new Sprite(new Texture("Dices/Dice " + dice + ".png"))));
-                diceValue.setVisible(true);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        diceValue.setVisible(false);
-                    }
-                }, 1);
-
-                Vector2 target = players.get(turnCount % 2).getTargetForward(dice);
-                players.get(turnCount % 2).turn = true;
-                playBoard.setMovement(players.get(turnCount % 2), dice, target);
-
-                turnCount++;
-                diceBtn.setTouchable(Touchable.disabled);
+                getMove(dice);
             }
         });
+    }
+
+    private void getMove(int dice){
+        diceValue.setDrawable(new SpriteDrawable(new Sprite(new Texture("Dices/Dice " + dice + ".png"))));
+        diceValue.setVisible(true);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                diceValue.setVisible(false);
+            }
+        }, 1);
+
+        Player player = players.get(turnCount % 2);
+
+        Vector2 target = player.getTargetForward(dice);
+        player.turn = true;
+        playBoard.setMovement(player, dice, target);
+
+        turnCount++;
+        diceBtn.setTouchable(Touchable.disabled);
     }
 
     public void setDiceButtonTouchable(){

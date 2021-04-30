@@ -1,20 +1,24 @@
 package model;
 
+import com.melihkacaman.entity.Pair;
+
 import player.PlayerCharacter;
 
-public class Pair {
+public class Couple {
 
-    private String pairUserName;
+    private Pair pair;
     private String selfUserName;
+    private int selfId;
 
     private PlayerCharacter selfCharacter;
     private PlayerCharacter pairCharacter;
 
-    public Pair(String pairUserName, String selfUserName) {
-        this.pairUserName = pairUserName;
+    public Couple(Pair pair, String selfUserName) {
+        this.pair = pair;
         this.selfUserName = selfUserName;
+        this.selfId = pair.getSelfId();
 
-        if (pairUserName.length() >= selfUserName.length()) {
+        if (pair.getUserName().length() >= selfUserName.length()) {
             pairCharacter = PlayerCharacter.REDBIRD;
             selfCharacter = PlayerCharacter.BLUEBIRD;
         }else {
@@ -24,7 +28,7 @@ public class Pair {
     }
 
     public String getPairUserName(){
-        return this.pairUserName;
+        return this.pair.getUserName();
     }
 
     public String getSelfUserName() {
@@ -37,5 +41,13 @@ public class Pair {
 
     public PlayerCharacter getPairCharacter(){
         return pairCharacter;
+    }
+
+    public Pair getPair(){
+        return pair;
+    }
+
+    public int getSelfId() {
+        return selfId;
     }
 }

@@ -6,10 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.melihkacaman.snakesandladders.GameMain;
+
+import java.io.Serializable;
+
 import helpers.GameInfo;
 
-public class Player extends Sprite {
+public class Player extends Sprite implements Serializable {
     private String name;
+    private int id;
     private PlayerCharacter character;
     private GameMain game;
     private World world;     // The world is the actual physics world that we are gonna put our player.
@@ -18,13 +22,15 @@ public class Player extends Sprite {
     private int currentLocation;
 
     public boolean turn;
+    public boolean diceTurn = false;
 
-    public Player(String name, World world,GameMain game , float x, float y, PlayerCharacter character) {
+    public Player(String name, World world,GameMain game , float x, float y, PlayerCharacter character, int id) {
         super(new Texture(character == PlayerCharacter.BLUEBIRD ? PlayerCharacter.getBlueBird() : PlayerCharacter.getRedBird()));
         setPosition(x - getWidth() / 2f, y - getHeight() / 2f);
 
         this.character = character;
         this.name = name;
+        this.id = id;
         this.world = world;
         this.game = game;
         this.turn = false;
@@ -100,5 +106,9 @@ public class Player extends Sprite {
 
     public PlayerCharacter getCharacter() {
         return character;
+    }
+
+    public int getId() {
+        return id;
     }
 }

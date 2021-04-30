@@ -12,9 +12,7 @@ import com.melihkacaman.snakesandladders.HelpersMethods;
 import client.ClientManager;
 import helpers.GameInfo;
 import huds.PlayerInfoHuds;
-import model.Pair;
-
-import java.awt.*;
+import model.Couple;
 
 public class PlayerInfo implements Screen {
     private GameMain gameMain;
@@ -26,7 +24,7 @@ public class PlayerInfo implements Screen {
 
     private Texture background;
     private Label userName;
-    private Pair pair;
+    private Couple couple;
     private ClientManager clientManager;
 
     public PlayerInfo(GameMain gameMain) {
@@ -42,9 +40,9 @@ public class PlayerInfo implements Screen {
         playerInfoHuds =  new PlayerInfoHuds(gameMain, this);
     }
 
-    public void setReadyToStartTrue(Pair pair, ClientManager clientManager){
+    public void setReadyToStartTrue(Couple couple, ClientManager clientManager){
         readyToStart = true;
-        this.pair = pair;
+        this.couple = couple;
         this.clientManager = clientManager;
     }
 
@@ -55,7 +53,7 @@ public class PlayerInfo implements Screen {
 
     private void update() {
         if (readyToStart) {
-            gameMain.setScreen(new HandShake(gameMain, pair, clientManager));
+            gameMain.setScreen(new HandShake(gameMain, couple, clientManager));
         }
     }
 

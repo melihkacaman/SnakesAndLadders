@@ -2,29 +2,23 @@ package sceenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import com.melihkacaman.snakesandladders.HelpersMethods;
 
-import client.Client;
 import client.ClientManager;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
 import helpers.ImageButtonGenerator;
-import huds.PlayerInfoHuds;
-import model.Pair;
+import model.Couple;
 import player.PlayerCharacter;
 
 public class HandShake implements Screen {
@@ -32,7 +26,7 @@ public class HandShake implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    private Pair pair;
+    private Couple couple;
     private ClientManager clientManager;
 
     private Texture background;
@@ -42,9 +36,9 @@ public class HandShake implements Screen {
 
     DefaultFontGenerator defaultFontGenerator;
 
-    public HandShake(GameMain gameMain, Pair pair, ClientManager clientManager) {
+    public HandShake(GameMain gameMain, Couple couple, ClientManager clientManager) {
         this.gameMain = gameMain;
-        this.pair = pair;
+        this.couple = couple;
         this.clientManager = clientManager;
 
         defaultFontGenerator = new DefaultFontGenerator(45);
@@ -76,8 +70,7 @@ public class HandShake implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 boolean res = clientManager.sendStartSignal();
                 if (res){
-                    System.out.println("ACK TRUE GELDİ");
-                    gameMain.setScreen(new PlayBoard(gameMain, pair));
+                    gameMain.setScreen(new PlayBoard(gameMain, couple, clientManager));
                 }else {
                     // ToDo : back to main menu
                 }
@@ -93,12 +86,12 @@ public class HandShake implements Screen {
     }
 
     private void drawNames(){
-        if (pair.getSelfCharacter() == PlayerCharacter.REDBIRD){
-            font.draw(gameMain.getBatch(), pair.getSelfUserName(), GameInfo.WIDTH / 2f - 200, GameInfo.HEIGHT / 2f+15);
-            font.draw(gameMain.getBatch(), pair.getPairUserName(), GameInfo.WIDTH / 2f + 50, GameInfo.HEIGHT / 2f+15);
+        if (couple.getSelfCharacter() == PlayerCharacter.REDBIRD){
+            font.draw(gameMain.getBatch(), couple.getSelfUserName(), GameInfo.WIDTH / 2f - 200, GameInfo.HEIGHT / 2f+15);
+            font.draw(gameMain.getBatch(), couple.getPairUserName(), GameInfo.WIDTH / 2f + 50, GameInfo.HEIGHT / 2f+15);
         }else {
-            font.draw(gameMain.getBatch(), pair.getSelfUserName(), GameInfo.WIDTH / 2f + 50, GameInfo.HEIGHT / 2f + 15);
-            font.draw(gameMain.getBatch(), pair.getPairUserName(), GameInfo.WIDTH / 2f - 200, GameInfo.HEIGHT / 2f + 15);
+            font.draw(gameMain.getBatch(), couple.getSelfUserName(), GameInfo.WIDTH / 2f + 50, GameInfo.HEIGHT / 2f + 15);
+            font.draw(gameMain.getBatch(), couple.getPairUserName(), GameInfo.WIDTH / 2f - 200, GameInfo.HEIGHT / 2f + 15);
         }
     }
 
