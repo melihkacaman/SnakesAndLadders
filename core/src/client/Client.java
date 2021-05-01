@@ -23,6 +23,7 @@ public class Client implements Runnable {
     private int port;
 
     private String selfUserName;
+    private Couple couple;
 
     private ClientManager clientManager;
 
@@ -53,7 +54,7 @@ public class Client implements Runnable {
         try {
             Pair pair = (Pair) input.readObject(); // pair userName blocking
 
-            Couple couple = new Couple(pair, selfUserName);
+            couple = new Couple(pair, selfUserName);
             clientManager = new ClientManager(sSocket,output, input);
             listeners.peek().contactPair(couple, clientManager);
 
@@ -69,15 +70,12 @@ public class Client implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        System.out.println("IS GAME STARTED ICINDE...");
+        System.out.println("Ben " + selfUserName);
         while (!sSocket.isClosed()){
-            System.out.println("READ OBJECT OLDU");
             try {
                 Object obj = input.readObject();
                 if (obj instanceof PairMovement){
-                    PairMovement pairMovement = (PairMovement) obj;
-                    // clientManager.activeMovement = new Movement()
+                    clientManager.activeMovement = (PairMovement) obj;
                     System.out.println("ACTIVE MOVEMENT DOLDU");
                 }
             } catch (IOException | ClassNotFoundException e) {

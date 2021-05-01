@@ -3,7 +3,7 @@ package com.melihkacaman.entity;
 import java.io.Serializable;
 
 public class PairMovement implements Serializable {
-    private int id;
+    private int id;   // the id of the player that starts to move
     private int dice;
     private CustomVector target;
 

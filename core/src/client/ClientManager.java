@@ -10,14 +10,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import movement.Movement;
-
 
 public class ClientManager {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private Socket socket;
-    public Movement activeMovement;
+    public PairMovement activeMovement;
 
     protected boolean isGameStarted = false;
 
@@ -37,7 +35,6 @@ public class ClientManager {
                 signalACK = (AckSignal)obj;
                 if(signalACK == AckSignal.ACK){
                     isGameStarted = true;
-                    System.out.println("TRUE YAPTIM");
                     return true;
                 }
             }
@@ -51,7 +48,9 @@ public class ClientManager {
 
     public void sendMovement(PairMovement movement){
         try {
+            System.out.println(movement.getId() + "veriyi yolladı");
             output.writeObject(movement);
+            System.out.println(movement.getId() + "devam etti");
         } catch (IOException e) {
             e.printStackTrace();
         }

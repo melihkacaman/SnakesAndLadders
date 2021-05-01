@@ -114,14 +114,19 @@ class ClientListenThread extends Thread {
             }
 
             // start Game
+            while (!(sClient.getPair().startingGame && sClient.startingGame)){
+                Thread.sleep(200);
+            }
+
+
             if (sClient.getPair().startingGame && sClient.startingGame){
                 sClient.getcOutput().writeObject(AckSignal.ACK);
                 sClient.getPair().getcOutput().writeObject(AckSignal.ACK);
                 while (!sClient.getSocket().isClosed()){
                     Object obj = sClient.getcInput().readObject();
                     if(obj instanceof PairMovement){
-                      if ((((PairMovement) obj).getId() == sClient.getId())) {
-                          sClient.getcOutput().writeObject(obj);
+                      if ((((PairMovement) obj).getId() == sClient.getId())) {   // Todo: might be unnecessary
+                          sClient.getPair().getcOutput().writeObject(obj);
                       }
                     }
                 }

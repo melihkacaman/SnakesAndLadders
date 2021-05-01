@@ -45,7 +45,8 @@ public class PlayBoard implements Screen {
 
     public void setMovement(Player player, int dice, Vector2 target) {
         this.movement = new Movement(player, dice, target);
-        if (couple.getSelfId() != player.getId()){
+        if (couple.getSelfId() == player.getId()){   // if it's me, send the data of movement
+            System.out.println(player.getName() + "setMovement içinde");
             clientManager.sendMovement(new PairMovement(player.getId(), dice, new CustomVector(target.x, target.y)));
         }
     }
@@ -172,6 +173,11 @@ public class PlayBoard implements Screen {
         buttons.getStage().draw();
 
         world.step(Gdx.graphics.getDeltaTime(),6,2);
+
+        if (clientManager.activeMovement != null){
+            System.out.println("HAREKET GELDİ!!!!");
+            clientManager.activeMovement = null;
+        }
     }
 
     @Override
