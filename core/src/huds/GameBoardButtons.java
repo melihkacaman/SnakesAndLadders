@@ -131,9 +131,11 @@ public class GameBoardButtons {
         diceBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                final int dice = throwDice();
+                if (couple.getSelfId() == players.get(turnCount % 2).getId()) {
+                    final int dice = throwDice();
 
-                getMove(dice);
+                    getMove(dice);
+                }
             }
         });
     }
@@ -158,9 +160,10 @@ public class GameBoardButtons {
         diceBtn.setTouchable(Touchable.disabled);
     }
 
-    public void setDiceButtonTouchable(){
-        diceBtn.setTouchable(Touchable.enabled);
+    public void setDiceButtonTouchable(boolean state){
+        diceBtn.setTouchable(state ? Touchable.enabled : Touchable.disabled);
     }
+
     public void setDiceButtonDisabled(){diceBtn.setTouchable(Touchable.disabled);}
     private void createAndPositionButtons() {
         pauseBtn = new ImageButtonGenerator("Buttons/Game/Pause.png");
@@ -184,5 +187,13 @@ public class GameBoardButtons {
 
     private int throwDice(){
         return this.random.nextInt(6) + 1;
+    }
+
+    public int getTurnCount() {
+        return turnCount;
+    }
+
+    public void increaseTurnCount() {
+        this.turnCount++;
     }
 }

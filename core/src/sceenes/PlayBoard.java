@@ -20,6 +20,7 @@ import huds.GameBoardButtons;
 import model.Couple;
 import movement.Movement;
 import player.Player;
+import player.PlayerCharacter;
 import stuff.Ladder;
 import stuff.Snake;
 import stuff.Stuff;
@@ -71,12 +72,24 @@ public class PlayBoard implements Screen {
 
         bg = new Texture("Backgrounds/Play Board.png"); // message
 
-        playerSelf = new Player(couple.getSelfUserName(), world, game, 25,188, couple.getSelfCharacter(),couple.getSelfId());
-        playerPair = new Player(couple.getPairUserName(), world, game, 25, 188, couple.getPairCharacter(), couple.getPair().getId());
-        players.add(playerSelf);
-        players.add(playerPair);
+        playerSelf = new Player(couple.getSelfUserName(), world, game, 25,188,
+                couple.getSelfCharacter(),couple.getSelfId());
+        playerPair = new Player(couple.getPairUserName(), world, game, 25, 188,
+                couple.getPairCharacter(), couple.getPair().getId());
+
+        fillPlayers();
 
         buttons = new GameBoardButtons(game, players, this,couple, clientManager);
+    }
+
+    private void fillPlayers(){
+        if (playerSelf.getCharacter() == PlayerCharacter.REDBIRD){
+            players.add(playerSelf);
+            players.add(playerPair);
+        }else {
+            players.add(playerPair);
+            players.add(playerSelf);
+        }
     }
 
     private void fillStuffs(ArrayList<JSONMapObject> defaultMap) {
@@ -103,7 +116,7 @@ public class PlayBoard implements Screen {
                     if (movement.getTarget().dst2(player.getX(), player.getY()) < 5){
                         player.setPosition(player.getX(), player.getY());
                         player.turn = false;
-                        buttons.setDiceButtonTouchable();
+                        buttons.setDiceButtonTouchable(true);
                         movement = null;
 
                         checkLocationForStuff(player.getCurrentLocation(), player);
@@ -141,7 +154,7 @@ public class PlayBoard implements Screen {
             movement.getPlayer().setPosition(movement.getPlayer().getX(), movement.getPlayer().getY());
             movement.getPlayer().turn = false;
             backward = false;
-            buttons.setDiceButtonTouchable();
+            buttons.setDiceButtonTouchable(true);
         }else if (movement.getPlayer().getX() < 20){
             movement.getPlayer().setPosition(GameInfo.WIDTH - 3f, movement.getPlayer().getY() - 55);
         }else {
@@ -180,7 +193,8 @@ public class PlayBoard implements Screen {
                     movement = new Movement(p, clientManager.activeMovement.getDice(),
                             new Vector2(clientManager.activeMovement.getTarget().x, clientManager.activeMovement.getTarget().y));
                     p.turn = true;
-
+                    buttons.setDiceButtonTouchable(false);
+                    buttons.increaseTurnCount();
                     clientManager.activeMovement = null;
                     break;
                 }

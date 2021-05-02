@@ -66,7 +66,7 @@ public class PlayerInfoHuds {
 
                         readyBtn.setTouchable(Touchable.disabled);
 
-                        waitingLabel.setText("Bekleniyor.");
+                        waitingLabel.setText("Waiting...");
 
                         client.contactListener(new TCPListener() {
                             @Override
