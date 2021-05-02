@@ -148,8 +148,7 @@ public class PlayBoard implements Screen {
                     movement = new Movement(player, abstractDice, abstractTarget);
                     backward = true;
                 }else if (stuff instanceof FinishPoint){
-                    //// TODO: 2.05.2021 finish screen
-                    System.out.println("Oyun bitti " + player.getName() + " baba kazandi");
+                    buttons.createEndPanel();
                 }
             }
         }
@@ -172,7 +171,7 @@ public class PlayBoard implements Screen {
     private void checkOutFinishing(){
         for (Player p : players){
             if (p.getY() > 655 && p.getX() > GameInfo.WIDTH - 20){
-                System.out.println("Oyun bitti " + p.getName()+ " kazandı");
+                buttons.createEndPanel();
             }
         }
     }

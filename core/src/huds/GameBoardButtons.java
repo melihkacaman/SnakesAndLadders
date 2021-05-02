@@ -30,6 +30,7 @@ import movement.Movement;
 import player.Player;
 import player.PlayerCharacter;
 import player.PlayerController;
+import sceenes.MainMenu;
 import sceenes.PlayBoard;
 
 import java.util.List;
@@ -47,9 +48,11 @@ public class GameBoardButtons {
     private Couple couple;
     private ClientManager clientManager;
 
-    private ImageButton pauseBtn;
-    private ImageButton diceBtn;
+    private ImageButton pauseBtn, diceBtn;
     private Image diceValue;
+
+    private Image endPanel;
+    private ImageButton quitBtn;
 
     private int turnCount = 0;
 
@@ -77,6 +80,25 @@ public class GameBoardButtons {
         addListenersToButtons();
 
         players.get(0).diceTurn = true;
+    }
+
+    public void createEndPanel(){
+        endPanel = new Image(new Texture("End Panel/End Panel.png"));
+        quitBtn = new ImageButtonGenerator("End Panel/Quit 2.png");
+
+        endPanel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, Align.center);
+        quitBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80, Align.center);
+
+        quitBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new MainMenu(game));
+                //// Todo: Sclient remove
+            }
+        });
+
+         stage.addActor(endPanel);
+         stage.addActor(quitBtn);
     }
 
     private void createAndPositionLabels() {
