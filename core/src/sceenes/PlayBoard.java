@@ -45,6 +45,8 @@ public class PlayBoard implements Screen {
     private boolean backward = false;
     private ClientManager clientManager;
 
+    private boolean stopMovement = false;
+
     public void setMovement(Player player, int dice, Vector2 target) {
         this.movement = new Movement(player, dice, target);
         if (couple.getSelfId() == player.getId()){   // if it's me, send the data of movement
@@ -73,9 +75,9 @@ public class PlayBoard implements Screen {
 
         bg = new Texture("Backgrounds/Play Board.png"); // message
 
-        playerSelf = new Player(couple.getSelfUserName(), world, game, 25,188,
+        playerSelf = new Player(couple.getSelfUserName(), world, game, GameInfo.XSTARTINGPOINT,GameInfo.YSTARTINGPOINT,
                 couple.getSelfCharacter(),couple.getSelfId());
-        playerPair = new Player(couple.getPairUserName(), world, game, 25, 188,
+        playerPair = new Player(couple.getPairUserName(), world, game, GameInfo.XSTARTINGPOINT, GameInfo.YSTARTINGPOINT,
                 couple.getPairCharacter(), couple.getPair().getId());
 
         fillPlayers();
@@ -148,7 +150,7 @@ public class PlayBoard implements Screen {
                     movement = new Movement(player, abstractDice, abstractTarget);
                     backward = true;
                 }else if (stuff instanceof FinishPoint){
-                    buttons.createEndPanel();
+                    buttons.createEndPanel(player);
                 }
             }
         }
@@ -171,7 +173,8 @@ public class PlayBoard implements Screen {
     private void checkOutFinishing(){
         for (Player p : players){
             if (p.getY() > 655 && p.getX() > GameInfo.WIDTH - 20){
-                buttons.createEndPanel();
+                stopMovement = true;
+                buttons.createEndPanel(p);
             }
         }
     }
@@ -189,9 +192,10 @@ public class PlayBoard implements Screen {
 
         game.getBatch().draw(playerSelf, playerSelf.getX(), playerSelf.getY());
         game.getBatch().draw(playerPair, playerPair.getX(), playerPair.getY());
-        move();
-        buttons.updateTopLabels();
-
+        if (!stopMovement){
+            move();
+            buttons.updateTopLabels();
+        }
 
         game.getBatch().end();
 

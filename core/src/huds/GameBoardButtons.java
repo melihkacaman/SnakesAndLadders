@@ -53,11 +53,12 @@ public class GameBoardButtons {
 
     private Image endPanel;
     private ImageButton quitBtn;
+    private Label endLabel;
 
     private int turnCount = 0;
 
-    private Label redName, redLocation;
-    private Label blueName, blueLocation;
+    private Label redName, redLocation, blueName, blueLocation;
+
     
     PlayBoard playBoard;
     public GameBoardButtons(GameMain game, List<Player> players, PlayBoard playBoard, Couple couple, ClientManager clientManager) {
@@ -82,11 +83,13 @@ public class GameBoardButtons {
         players.get(0).diceTurn = true;
     }
 
-    public void createEndPanel(){
+    public void createEndPanel(Player winnerUser){
         endPanel = new Image(new Texture("End Panel/End Panel.png"));
+        endLabel = defaultFontGenerator.getNewLabel(winnerUser.getName() + " won!", Color.BLUE);
         quitBtn = new ImageButtonGenerator("End Panel/Quit 2.png");
 
         endPanel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f, Align.center);
+        endLabel.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT /2f + 50, Align.center);
         quitBtn.setPosition(GameInfo.WIDTH / 2f, GameInfo.HEIGHT / 2f - 80, Align.center);
 
         quitBtn.addListener(new ChangeListener() {
@@ -98,7 +101,19 @@ public class GameBoardButtons {
         });
 
          stage.addActor(endPanel);
+         stage.addActor(endLabel);
          stage.addActor(quitBtn);
+
+         diceBtn.remove();
+         diceValue.remove();
+
+         Image winner = new Image(winnerUser.getTexture());
+         winner.setPosition(GameInfo.WIDTH / 2f - 20 , GameInfo.HEIGHT /2f + 10, Align.center);
+         winner.setHeight(90);
+         winner.setWidth(90);
+         winnerUser.setPosition(GameInfo.WIDTH + 100 , GameInfo.HEIGHT + 100);
+
+         stage.addActor(winner);
     }
 
     private void createAndPositionLabels() {

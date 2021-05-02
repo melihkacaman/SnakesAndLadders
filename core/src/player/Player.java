@@ -91,7 +91,7 @@ public class Player extends Sprite implements Serializable {
     }
 
     public int getCurrentLocation(){
-        return this.currentLocation;
+        return Math.min(this.currentLocation, 100);
     }
 
     public void drawPlayer(SpriteBatch batch) {
