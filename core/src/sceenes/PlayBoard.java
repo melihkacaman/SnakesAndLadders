@@ -21,6 +21,7 @@ import model.Couple;
 import movement.Movement;
 import player.Player;
 import player.PlayerCharacter;
+import stuff.FinishPoint;
 import stuff.Ladder;
 import stuff.Snake;
 import stuff.Stuff;
@@ -98,6 +99,8 @@ public class PlayBoard implements Screen {
                 this.stuffs.add(new Ladder(obj.getId(), obj.getFirstValue(), obj.getSecondValue()));
             }else if(obj.getType().equals("Snake")){
                 this.stuffs.add(new Snake(obj.getId(), obj.getFirstValue(), obj.getSecondValue()));
+            }else if(obj.getType().equals("FinishPoint")){
+                this.stuffs.add(new FinishPoint(obj.getId(), obj.getFirstValue(), obj.getSecondValue()));
             }
         }
     }
@@ -119,7 +122,7 @@ public class PlayBoard implements Screen {
                         buttons.setDiceButtonTouchable(true);
                         movement = null;
 
-                        checkLocationForStuff(player.getCurrentLocation(), player);
+                        //checkLocationForStuff(player.getCurrentLocation(), player);
                     }else if (player.getX() > GameInfo.WIDTH - 20){
                         player.setPosition(3, player.getY() + 55);
                     }else {
@@ -136,7 +139,7 @@ public class PlayBoard implements Screen {
                 buttons.setDiceButtonDisabled();
                 player.turn = true;
                 if (stuff instanceof Ladder){
-                    int abstractDice = stuff.getEndCell() - location;     // use ladder class
+                    int abstractDice = stuff.getEndCell() - location;     //// Todo: use ladder class
                     Vector2 abstractTarget = player.getTargetForward(abstractDice);
                     movement = new Movement(player, abstractDice, abstractTarget);
                 }else if (stuff instanceof Snake){
@@ -144,6 +147,9 @@ public class PlayBoard implements Screen {
                     Vector2 abstractTarget = player.getTargetBackward(abstractDice);
                     movement = new Movement(player, abstractDice, abstractTarget);
                     backward = true;
+                }else if (stuff instanceof FinishPoint){
+                    //// TODO: 2.05.2021 finish screen
+                    System.out.println("Oyun bitti " + player.getName() + " baba kazandi");
                 }
             }
         }
@@ -162,6 +168,14 @@ public class PlayBoard implements Screen {
         }
     }
 
+
+    private void checkOutFinishing(){
+        for (Player p : players){
+            if (p.getY() > 655 && p.getX() > GameInfo.WIDTH - 20){
+                System.out.println("Oyun bitti " + p.getName()+ " kazandı");
+            }
+        }
+    }
 
     @Override
     public void render(float delta) {
@@ -190,8 +204,6 @@ public class PlayBoard implements Screen {
         if (clientManager.activeMovement != null){
             for (Player p : players) {
                 if (p.getId() == clientManager.activeMovement.getId()){
-                    //movement = new Movement(p, clientManager.activeMovement.getDice(),
-                        //    new Vector2(clientManager.activeMovement.getTarget().x, clientManager.activeMovement.getTarget().y));
                     movement = new Movement(p, clientManager.activeMovement.getDice(),
                             p.getTargetForward(clientManager.activeMovement.getDice()));
 
@@ -203,6 +215,9 @@ public class PlayBoard implements Screen {
                 }
             }
         }
+
+
+        checkOutFinishing();
     }
 
     @Override

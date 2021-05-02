@@ -77,6 +77,12 @@
       "type": "Snake",
       "firstValue": 99,
       "secondValue": 69
+    },
+    {
+      "id": 14,
+      "type": "FinishPoint",
+      "firstValue": 99,
+      "secondValue": 69
     }
   ]
 }
