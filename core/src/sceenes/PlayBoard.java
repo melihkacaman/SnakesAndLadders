@@ -190,8 +190,11 @@ public class PlayBoard implements Screen {
         if (clientManager.activeMovement != null){
             for (Player p : players) {
                 if (p.getId() == clientManager.activeMovement.getId()){
+                    //movement = new Movement(p, clientManager.activeMovement.getDice(),
+                        //    new Vector2(clientManager.activeMovement.getTarget().x, clientManager.activeMovement.getTarget().y));
                     movement = new Movement(p, clientManager.activeMovement.getDice(),
-                            new Vector2(clientManager.activeMovement.getTarget().x, clientManager.activeMovement.getTarget().y));
+                            p.getTargetForward(clientManager.activeMovement.getDice()));
+
                     p.turn = true;
                     buttons.setDiceButtonTouchable(false);
                     buttons.increaseTurnCount();
