@@ -21,6 +21,7 @@ import client.ClientManager;
 import client.TCPListener;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
+import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import model.Couple;
 import sceenes.PlayerInfo;
@@ -61,6 +62,7 @@ public class PlayerInfoHuds {
                 String userName = userNameTxt.getText();
                 if(!userName.isEmpty()){
                     try {
+                        GameManager.getInstance().playOKSound();
                         Client client = new Client("127.0.0.1", 5000, userName);
                         new Thread(client).start();
 

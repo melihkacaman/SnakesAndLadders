@@ -1,6 +1,7 @@
 package huds;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ import com.melihkacaman.snakesandladders.GameMain;
 import client.ClientManager;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
+import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import model.Couple;
 import movement.Movement;
@@ -55,6 +57,8 @@ public class GameBoardButtons {
     private ImageButton quitBtn;
     private Label endLabel;
 
+    public Sound diceSound;
+
     private int turnCount = 0;
 
     private Label redName, redLocation, blueName, blueLocation;
@@ -79,6 +83,8 @@ public class GameBoardButtons {
         createAndPositionLabels();
         createAndPositionButtons();
         addListenersToButtons();
+
+        diceSound = Gdx.audio.newSound(Gdx.files.internal("Sounds/Dice Sound.wav"));
 
         players.get(0).diceTurn = true;
     }
@@ -108,7 +114,7 @@ public class GameBoardButtons {
          diceValue.remove();
 
          Image winner = new Image(winnerUser.getTexture());
-         winner.setPosition(GameInfo.WIDTH / 2f - 20 , GameInfo.HEIGHT /2f + 10, Align.center);
+         winner.setPosition(GameInfo.WIDTH / 2f - 20 , GameInfo.HEIGHT /2f - 25, Align.center);
          winner.setHeight(90);
          winner.setWidth(90);
          winnerUser.setPosition(GameInfo.WIDTH + 100 , GameInfo.HEIGHT + 100);
@@ -169,8 +175,8 @@ public class GameBoardButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (couple.getSelfId() == players.get(turnCount % 2).getId()) {
+                    diceSound.play();
                     final int dice = throwDice();
-
                     getMove(dice);
                 }
             }

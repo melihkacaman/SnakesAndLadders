@@ -17,8 +17,8 @@ public class Couple {
         this.pair = pair;
         this.selfUserName = selfUserName;
         this.selfId = pair.getSelfId();
-
-        if (pair.getUserName().length() >= selfUserName.length()) {
+        // pair.getUserName().length() >= selfUserName.length()
+        if (pair.getId() > selfId) {
             pairCharacter = PlayerCharacter.REDBIRD;
             selfCharacter = PlayerCharacter.BLUEBIRD;
         }else {

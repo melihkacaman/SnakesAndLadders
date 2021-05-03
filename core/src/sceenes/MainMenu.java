@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.melihkacaman.snakesandladders.GameMain;
 import helpers.GameInfo;
+import helpers.GameManager;
 import huds.MainMenuButtons;
 
 public class MainMenu implements Screen {
@@ -18,7 +19,6 @@ public class MainMenu implements Screen {
 
     private Texture background;
     private MainMenuButtons buttons;
-
 
     public MainMenu(GameMain gameMain) {
         this.gameMain = gameMain;

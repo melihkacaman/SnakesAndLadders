@@ -16,7 +16,7 @@
       "id": 3,
       "type": "Ladder",
       "firstValue": 20,
-      "secondValue": 60
+      "secondValue": 70
     },
     {
       "id": 4,
@@ -28,7 +28,7 @@
       "id": 5,
       "type": "Snake",
       "firstValue": 34,
-      "secondValue": 1
+      "secondValue": 2
     },
     {
       "id": 6,
@@ -67,12 +67,6 @@
       "secondValue": 57
     },
     {
-      "id": 12,
-      "type": "Snake",
-      "firstValue": 91,
-      "secondValue": 61
-    },
-    {
       "id": 13,
       "type": "Snake",
       "firstValue": 99,
@@ -81,8 +75,8 @@
     {
       "id": 14,
       "type": "FinishPoint",
-      "firstValue": 99,
-      "secondValue": 69
+      "firstValue": 100,
+      "secondValue": 100
     }
   ]
 }

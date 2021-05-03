@@ -1,5 +1,6 @@
 package sceenes;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,6 +18,7 @@ import com.melihkacaman.snakesandladders.HelpersMethods;
 import client.ClientManager;
 import helpers.DefaultFontGenerator;
 import helpers.GameInfo;
+import helpers.GameManager;
 import helpers.ImageButtonGenerator;
 import model.Couple;
 import player.PlayerCharacter;
@@ -74,6 +76,7 @@ public class HandShake implements Screen {
                     checkBtnTimes = true;
                     boolean res = clientManager.sendStartSignal();
                     if (res){
+                        GameManager.getInstance().playOKSound();
                         gameMain.setScreen(new PlayBoard(gameMain, couple, clientManager));
                     }else {
                         // ToDo : back to main menu

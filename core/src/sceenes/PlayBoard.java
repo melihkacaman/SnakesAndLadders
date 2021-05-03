@@ -15,6 +15,7 @@ import com.melihkacaman.snakesandladders.HelpersMethods;
 
 import client.ClientManager;
 import helpers.GameInfo;
+import helpers.GameManager;
 import helpers.JSONMapObject;
 import huds.GameBoardButtons;
 import model.Couple;
@@ -124,7 +125,7 @@ public class PlayBoard implements Screen {
                         buttons.setDiceButtonTouchable(true);
                         movement = null;
 
-                        //checkLocationForStuff(player.getCurrentLocation(), player);
+                        checkLocationForStuff(player.getCurrentLocation(), player);
                     }else if (player.getX() > GameInfo.WIDTH - 20){
                         player.setPosition(3, player.getY() + 55);
                     }else {
@@ -141,15 +142,20 @@ public class PlayBoard implements Screen {
                 buttons.setDiceButtonDisabled();
                 player.turn = true;
                 if (stuff instanceof Ladder){
+                    GameManager.getInstance().playLadderSound();
                     int abstractDice = stuff.getEndCell() - location;     //// Todo: use ladder class
                     Vector2 abstractTarget = player.getTargetForward(abstractDice);
                     movement = new Movement(player, abstractDice, abstractTarget);
                 }else if (stuff instanceof Snake){
+                    GameManager.getInstance().playSnakeSound();
                     int abstractDice = stuff.getStepsNumber();
                     Vector2 abstractTarget = player.getTargetBackward(abstractDice);
                     movement = new Movement(player, abstractDice, abstractTarget);
                     backward = true;
                 }else if (stuff instanceof FinishPoint){
+                    if (!stopMovement)
+                        GameManager.getInstance().playWinSound();
+                    stopMovement = true;
                     buttons.createEndPanel(player);
                 }
             }
@@ -157,7 +163,7 @@ public class PlayBoard implements Screen {
     }
 
     private void moveBackward(){
-        if (movement.getTarget().dst2(movement.getPlayer().getX(), movement.getPlayer().getY()) < 5){
+        if (movement.getTarget().dst2(movement.getPlayer().getX(), movement.getPlayer().getY()) < 3){
             movement.getPlayer().setPosition(movement.getPlayer().getX(), movement.getPlayer().getY());
             movement.getPlayer().turn = false;
             backward = false;
@@ -173,6 +179,8 @@ public class PlayBoard implements Screen {
     private void checkOutFinishing(){
         for (Player p : players){
             if (p.getY() > 655 && p.getX() > GameInfo.WIDTH - 20){
+                if (!stopMovement)
+                    GameManager.getInstance().playWinSound();
                 stopMovement = true;
                 buttons.createEndPanel(p);
             }
@@ -248,6 +256,7 @@ public class PlayBoard implements Screen {
         bg.dispose();
         buttons.getStage().dispose();
         world.dispose();
+        buttons.diceSound.dispose();
     }
 
     public List<Player> getPlayers() {

@@ -41,6 +41,7 @@ public class MainMenuButtons {
         playBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                GameManager.getInstance().playBtnSound();
                 game.setScreen(new PlayerInfo(game));
             }
         });
@@ -49,12 +50,14 @@ public class MainMenuButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // options screen
+                GameManager.getInstance().playBtnSound();
             }
         });
 
         quitBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                GameManager.getInstance().playBtnSound();
                 // quit
             }
         });

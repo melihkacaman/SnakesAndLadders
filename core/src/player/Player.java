@@ -56,10 +56,6 @@ public class Player extends Sprite implements Serializable {
         shape.dispose();
     }
 
-     public void updatePlayer(){
-         this.setPosition(body.getPosition().x, body.getPosition().y);
-    }
-
     public Vector2 getTargetForward(int dice){
         Vector2 result = new Vector2(getX(), getY());
         for (int i = 1; i <= dice; i++) {
@@ -92,12 +88,6 @@ public class Player extends Sprite implements Serializable {
 
     public int getCurrentLocation(){
         return Math.min(this.currentLocation, 100);
-    }
-
-    public void drawPlayer(SpriteBatch batch) {
-        game.getBatch().begin();
-        game.getBatch().draw(this, getX(), getY());
-        game.getBatch().end();
     }
 
     public String getName() {
