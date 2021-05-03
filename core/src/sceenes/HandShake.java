@@ -36,6 +36,8 @@ public class HandShake implements Screen {
 
     DefaultFontGenerator defaultFontGenerator;
 
+    private boolean checkBtnTimes = false;
+
     public HandShake(GameMain gameMain, Couple couple, ClientManager clientManager) {
         this.gameMain = gameMain;
         this.couple = couple;
@@ -64,15 +66,18 @@ public class HandShake implements Screen {
         letsBegin.setPosition(GameInfo.WIDTH /2f - letsBegin.getWidth() / 2f, GameInfo.HEIGHT / 2f - 200);
 
         stage.addActor(letsBegin);
-
+        //// todo: Button shouldn't be pushed two times in a row
         letsBegin.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                boolean res = clientManager.sendStartSignal();
-                if (res){
-                    gameMain.setScreen(new PlayBoard(gameMain, couple, clientManager));
-                }else {
-                    // ToDo : back to main menu
+                if (!checkBtnTimes){
+                    checkBtnTimes = true;
+                    boolean res = clientManager.sendStartSignal();
+                    if (res){
+                        gameMain.setScreen(new PlayBoard(gameMain, couple, clientManager));
+                    }else {
+                        // ToDo : back to main menu
+                    }
                 }
             }
         });
